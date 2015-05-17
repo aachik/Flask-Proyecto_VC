@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+	{% for vacante in vacantes %}
+	<hr class="tweets-divider">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="static/media/uploads/{{ vacante.imagen }}" class="imagen_vacante">
+            </div>
+            <div class="col-md-8">
+                <blockquote>
+                  <p><a href="/vacantes/{{ vacante.id }}">{{ vacante.descripcion }}</a></p>
+                  <footer>Despues de realizar la accion ciudadana <cite title="Source Title"><a href="#">@{{ vacante.usuario.usuario }}</a></cite></footer>
+                </blockquote>
+            </div>
+        </div>
+	{% endfor %}
+</div>
+{% endblock %}

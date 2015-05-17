@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block content %}
+            <div class="container">
+                <h1 class="recientes">{{ vacante.titulo }}</h1>
+                
+                <div class="row">
+                    <div class="col-md-8">
+                        
+
+                        <h2> {{ vacante.descripcion }} </h2>
+                        <p>{{ vacante.descripcion }}</p>
+                        
+                        
+            <hr class="tweets-divider">
+
+                        <h2>{{ vacante.contacto }}</h2>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <ul>
+                                    <li>Correo:</li>
+                                    <li>Sitio web:</li>
+                                    <li>Facebook:</li>
+                                    <li>Twitter:</li>
+                                    <li>Telefono:</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-8">
+                                <ul>
+                                    <li>ejemplo@correo.com</li>
+                                    <li><a href="#">www.ejemplo.com</a></li>
+                                    <li><a href="#">/Ejemplo</a></li>
+                                    <li><a href="#">@ejemplo</a></li>
+                                    <li>5-555-555</li>
+                                </ul>
+                            </div>
+                        </div>
+            <hr class="page-divider">
+
+                    <h2>Mapa</h2>
+                    <div id="map"></div>
+                        
+                    </div>
+                    <div class="col-md-4">
+                        
+                        <h2> Imagenes </h2>
+                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+              
+              <ol class="carousel-indicators">
+                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+              </ol>
+
+              <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                  <img src="../static/media/uploads/{{ vacante.imagen }}" alt="..." class='imagen_vacante_grande'>
+                  <div class="carousel-caption">
+                    <h2>Imagen de demo</h2>
+                  </div>
+                </div>
+                <div class="item">
+                  <img src="http://placehold.it/450x450" alt="...">
+                  <div class="carousel-caption">
+                    <h2>Imagen dos de demo</h2>
+                  </div>
+                </div>
+                <div class="item">
+                  <img src="http://placehold.it/450x450" alt="...">
+                  <div class="carousel-caption">
+                    <h2>Imagen Tres de demo</h2>
+                  </div>
+                </div>
+
+              </div>
+              <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">Anterior</span>
+              </a>
+              <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                <span class="sr-only">Siguiente</span>
+              </a>
+            </div>  
+                    <h3>Listo para ayudar?</h3>
+                    <form method='GET' action='../aplicar/{{ vacante.id }}'>
+                        <input type="submit" value="Aplicar">
+                    </form>     
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <h2>Ellos ya estan ayudando</h2>
+                     {% for aplicante in vacante.aplicantes() %}
+                     <ul class="lista_aplicantes">
+                       <li>{{ aplicante.usuario }}</li>
+                     </ul>
+                     {% endfor %}
+                     </div>
+            </div>
+{% endblock %}
+            
+            
