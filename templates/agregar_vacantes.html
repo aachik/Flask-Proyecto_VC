@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% from 'macros.html' import render_field %}
 {% block content %}
+<div class="formularios">
+	<h2>Agregar una nueva vacante</h2>
 	<form method="POST" action="" class="form" enctype="multipart/form-data">
 		{{ form.hidden_tag() }}
 		{% for field in form %}
@@ -8,4 +10,5 @@
 		{% endfor %}
 		<button type="submit" id="submit">Agregar vacante</button>
 	</form>
+</div>
 {% endblock %}

@@ -26,31 +26,31 @@
                     <div class="col-md-4">
                         
                         <h2> Imagenes </h2>
-                        <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+            <div id="carousel-example-generic" class="carousel slide vacante_carousel" data-ride="carousel">
               
-              <ol class="carousel-indicators">
+              <ol class="carousel-indicators ">
                 <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
                 <li data-target="#carousel-example-generic" data-slide-to="1"></li>
                 <li data-target="#carousel-example-generic" data-slide-to="2"></li>
               </ol>
 
-              <div class="carousel-inner" role="listbox">
+              <div class="carousel-inner" role="listbox" >
                 <div class="item active">
-                  <img src="../static/media/uploads/{{ vacante.imagen }}" alt="..." class='imagen_vacante_grande'>
+                  <img src="../static/media/uploads/{{ vacante.imagen1 }}" alt="..." class='imagen_vacante_grande'>
                   <div class="carousel-caption">
-                    <h2>Imagen de demo</h2>
+                    <h2>{{ vacante.descripcion_imagen1 }}</h2>
                   </div>
                 </div>
                 <div class="item">
-                  <img src="http://placehold.it/450x450" alt="...">
+                  <img src="../static/media/uploads/{{ vacante.imagen2 }}" alt="...">
                   <div class="carousel-caption">
-                    <h2>Imagen dos de demo</h2>
+                    <h2>{{ vacante.descripcion_imagen2 }}</h2>
                   </div>
                 </div>
                 <div class="item">
-                  <img src="http://placehold.it/450x450" alt="...">
+                  <img src="../static/media/uploads/{{ vacante.imagen3 }}" alt="...">
                   <div class="carousel-caption">
-                    <h2>Imagen Tres de demo</h2>
+                    <h2>{{ vacante.descripcion_imagen3 }}</h2>
                   </div>
                 </div>
 

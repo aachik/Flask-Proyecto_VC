@@ -53,7 +53,12 @@ class Vacante(Model):
 	titulo = CharField(null=False, unique=True)
 	descripcion = TextField(null=False)
 	contacto = TextField(null=False)
-	imagen = CharField(null=True)
+	descripcion_imagen1 = CharField(null=True)
+	imagen1= CharField(null=True)
+	descripcion_imagen2 = CharField(null=True)
+	imagen2 = CharField(null=True)
+	descripcion_imagen3 = CharField(null=True)
+	imagen3 = CharField(null=True)
 	finalizada = BooleanField(null=False)
 	direccion = TextField(unique=False)
 	usuario = ForeignKeyField(Usuario)
@@ -64,7 +69,9 @@ class Vacante(Model):
 		order_by = ('-creado',)
 
 	@classmethod
-	def nueva(cls, titulo, descripcion, contacto, imagen, direccion, usuario, finalizada=False):
+	def nueva(cls, titulo, descripcion, contacto,descripcion_imagen1,
+		imagen1,descripcion_imagen2, imagen2, descripcion_imagen3,
+		imagen3, direccion, usuario, finalizada=False):
 		try:
 			cls.create(
 				titulo=titulo,
@@ -73,7 +80,12 @@ class Vacante(Model):
 				finalizada=finalizada,
 				direccion=direccion,
 				usuario=usuario,
-				imagen=imagen
+				descripcion_imagen1=descripcion_imagen1,
+				imagen1=imagen1,
+				descripcion_imagen2=descripcion_imagen2,
+				imagen2=imagen2,
+				descripcion_imagen3=descripcion_imagen3,
+				imagen3=imagen3
 			)
 		except IntegrityError:
 			raise ValueError("La vacante ya existe")

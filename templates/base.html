@@ -37,10 +37,12 @@
                         <li><a href="{{ url_for('vacantes') }}">Recientes</a></li>
                         <li><a href="#">Populares</a></li>
                         <li><a href="#">Terminadas</a></li>
+                        {% if current_user.is_authenticated() %}
                         <li class="divider"></li>
-                        <li><a href="{{ url_for('subir_vacante') }}">Subir vacante</a></li>
+                          <li><a href="{{ url_for('subir_vacante') }}">Subir vacante</a></li>
                         <li class="divider"></li>
                         <li><a href="#">Aplicar aleatoriamente</a></li>
+                         {% endif %}
                       </ul>
                     </li>
                   </ul>

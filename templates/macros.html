@@ -5,6 +5,14 @@
 				<div class="notification error">{{ error }}</div>
 			{% endfor %}
 		{% endif %}
-		{{ field(placeholder=field.label.text) }}
+		<div class="row">
+		{% if field.label.text == 'Csrf Token' %}
+
+		{% else %}
+			<div class="col-md-4"><label for="{{ field.label.text }}" >{{ field.label.text }}</label></div>
+		{% endif %}
+
+		<div class="col-md-8">{{ field(id=field.label.text, class='form-control') }}</div>
+		</div>
 	</div>
 {% endmacro %}

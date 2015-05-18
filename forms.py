@@ -40,16 +40,9 @@ class RegistroForm(Form):
             Email(),
             email_existe
         ])
-    twitter = StringField('Twitter', 
-        validators=[
-                DataRequired(),
-                Regexp(
-                r'^[a-zA-Z0-9_]+$',
-                message=("El usuario debe ser valido y puede contener solo letras, "
-                         "numeros y guiones bajos")
-            )])
+    twitter = StringField('Twitter')
 
-    bio = TextAreaField('Biografia:', validators=[ DataRequired()])
+    bio = TextAreaField('Biografia:')
     password = PasswordField(
         'Password',
         validators=[
@@ -80,8 +73,14 @@ class VacanteForm(Form):
         validators=[
             DataRequired(),
         ])
-    imagen = FileField('Imagen', validators=[DataRequired(),])
+
     direccion = StringField('Direccion', validators=[DataRequired(),])
+    descripcion_imagen1 = StringField('Titulo de la imagen 1', validators=[DataRequired(),])
+    imagen1 = FileField('Imagen 1', validators=[DataRequired(),])
+    descripcion_imagen2 = StringField('Titulo de la imagen 2', validators=[DataRequired(),])
+    imagen2 = FileField('Imagen 2',validators=[DataRequired(),])
+    descripcion_imagen3 = StringField('Titulo de la imagen 3', validators=[DataRequired(),])
+    imagen3 = FileField('Imagen 3', validators=[DataRequired(),])
 
 class LoginForm(Form):
     email = StringField('Email', validators=[DataRequired(), Email()])

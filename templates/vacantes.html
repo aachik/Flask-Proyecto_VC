@@ -5,12 +5,12 @@
 	<hr class="tweets-divider">
         <div class="row">
             <div class="col-md-4">
-                <img src="static/media/uploads/{{ vacante.imagen }}" class="imagen_vacante">
+                <img src="static/media/uploads/{{ vacante.imagen1 }}" class="imagen_vacante">
             </div>
             <div class="col-md-8">
                 <blockquote>
-                  <p><a href="/vacantes/{{ vacante.id }}">{{ vacante.descripcion }}</a></p>
-                  <footer>Despues de realizar la accion ciudadana <cite title="Source Title"><a href="#">@{{ vacante.usuario.usuario }}</a></cite></footer>
+                  <p><a href="/vacantes/{{ vacante.id }}">{{ vacante.titulo }}</a></p>
+                  <footer>{{ vacante.usuario.bio }} <cite title="Source Title"><a href="#">@{{ vacante.usuario.usuario }}</a></cite></footer>
                 </blockquote>
             </div>
         </div>

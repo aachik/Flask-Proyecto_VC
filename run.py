@@ -72,23 +72,39 @@ def subir_vacante():
 	if form.validate_on_submit():
 		flash('Gracias por subir una vacante! +10!', 'exito')
 		usuario = models.Usuario.get(models.Usuario.id**g.user.id)
-		img = form.imagen.data
-		path=os.path.join(app.config['UPLOAD_FOLDER'], img.filename)
-		with open(path, 'wb+') as f:
-			f.write(img.read())
-
+		img1 = form.imagen1.data
+		img2 = form.imagen2.data
+		img3 = form.imagen3.data
+		path1=os.path.join(app.config['UPLOAD_FOLDER'], img1.filename)
+		print(path1)
+		path2=os.path.join(app.config['UPLOAD_FOLDER'], img2.filename)
+		print(path2)
+		path3=os.path.join(app.config['UPLOAD_FOLDER'], img3.filename)
+		print(path3)
+		with open(path1, 'wb+') as f1:
+			f1.write(img1.read())
+		with open(path2, 'wb+') as f2:
+			f2.write(img2.read())
+		with open(path3, 'wb+') as f3:
+			f3.write(img3.read())
 		models.Vacante.nueva(
 			titulo=form.titulo.data,
 			descripcion=form.descripcion.data,
 			contacto=form.contacto.data,
 			direccion=form.direccion.data,
 			usuario=usuario,
-			imagen=img.filename
+			descripcion_imagen1=form.descripcion_imagen1.data,
+			imagen1=img1.filename,
+			descripcion_imagen2=form.descripcion_imagen2.data,
+			imagen2=img2.filename,
+			descripcion_imagen3=form.descripcion_imagen3.data,
+			imagen3=img3.filename
 		)
 		q = models.Usuario.update(puntos = models.Usuario.puntos + 10).where(models.Usuario.id == g.user.id)
 		q.execute()
 
 		return redirect(url_for('main'))
+	
 	return render_template('agregar_vacantes.html', form=form)
 
 
@@ -122,7 +138,6 @@ def vacantes():
 def vacante(ident):
 	try:
 		vacante = models.Vacante.get(models.Vacante.id**ident)
-		
 		return render_template('vacante.html', vacante=vacante)
 	except models.DoesNotExist:
 		pass
@@ -150,17 +165,16 @@ def aplicar(vacante):
 				aplicante=g.user._get_current_object(),
 				vacante=vacante
 			)
+			q = models.Usuario.update(puntos = models.Usuario.puntos + 10).where(models.Usuario.id == g.user.id)
+			q.execute()
+			flash("Gracias por aplicar {}! toma 15 puntos!".format(g.user._get_current_object().usuario), "success")
 			return redirect(url_for('vacantes', usuario=g.user._get_current_object()))
 		except models.IntegrityError:
 			pass
-		else:
-			q = models.Usuario.update(puntos = models.Usuario.puntos + 10).where(models.Usuario.id == g.user.id)
-			q.execute()
-			flash("Gracias por aplicar {}!".format(aplicante.username), "success")
 	
 @app.route('/puntaje')
 def puntaje():
-	usuarios = models.Usuario.select()
+	usuarios = models.Usuario.select().order_by(-models.Usuario.puntos)
 	return render_template('puntuaje.html', usuarios=usuarios)
 
 
@@ -170,7 +184,7 @@ if __name__ == '__main__':
 	models.Usuario.nuevo(
 		usuario='Abdul',
 		twitter_id='abdulachik',
-		puntos=0,
+		puntos=12,
 		bio='Melomano, programador, amante de los gatos!',
 		email='abdulhamid@outlook.com',
 		password='aa121292',
@@ -178,7 +192,7 @@ if __name__ == '__main__':
 	models.Usuario.nuevo(
 		usuario='Guillermo',
 		twitter_id='sindykiu',
-		puntos=0,
+		puntos=9,
 		bio='Hola soy un abogado, me gusta correr y comer',
 		email='memo@outlook.com',
 		password='budaxoxo')
