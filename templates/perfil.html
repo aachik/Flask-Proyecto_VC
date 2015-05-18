@@ -13,6 +13,7 @@
 	        	<ul class="lista_aplicantes">
 	            	<li>Usuario: {{ aplicante.usuario }}</li>
 	            	<form method="POST" action="/finalizar/{{ vacante.id }}">
+	            		<input type="hidden" name="usuario" value="{{ aplicante.usuario }}">
 			           <input type="text" name="puntos">
 			           <button type="input">Calificar</button>
 			        </form>

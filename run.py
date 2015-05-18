@@ -179,10 +179,10 @@ def finalizar(vacante):
 	vacante = models.Vacante.get(models.Vacante.id**vacante)
 	q = models.Vacante.update(finalizada = True).where(models.Vacante.id == vacante.id)
 	q.execute()
-	q = models.Usuario.update(puntos = models.Usuario.puntos + int(request.form['puntos'])).where(models.Usuario.id == g.user.id)
+	q = models.Usuario.update(puntos = models.Usuario.puntos + int(request.form['puntos'])).where(models.Usuario.usuario == request.form['usuario'])
 	q.execute()
 	flash('Vacante finalizada, gracias! +20!','success')
-	return render_template(url_for('perfil'))
+	return redirect(url_for('perfil'))
 
 
 @app.route('/perfil')
