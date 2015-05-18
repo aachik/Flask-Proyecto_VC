@@ -35,19 +35,26 @@ class Usuario(UserMixin, Model):
     	except IntegrityError:
     		raise ValueError("El usuario ya existe")
 
-    def vacantes(self):
+    def vacantes_aplicadas(self):
     	return (
     		Usuario.select().join(
     			Aplicantes, on=Aplicantes.vacante).where(
     			Aplicantes.aplicante == self
     			)
     	)
+    def vacantes_creadas(self):
+    	return ( 
+    		Vacante.select().where(
+    			Vacante.usuario==self
+    			) 
+    		)
 
     def mejores_puntajes(self):
     	return (Usuario.select().order_by(-Usuario.puntos))
 
     def __repr__(self):
     	return '{}'.format(self.usuario)
+
 
 class Vacante(Model):
 	titulo = CharField(null=False, unique=True)
@@ -97,6 +104,7 @@ class Vacante(Model):
     			Aplicantes.vacante == self
     			)
     	)
+
 
 class Aplicantes(Model):
 	vacante = ForeignKeyField(Vacante, related_name='vacante')

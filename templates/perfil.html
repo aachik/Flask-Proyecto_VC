@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+
+<h1> Vacantes creadas por ti: </h1>
+{% for vacante in vacantes %}
+	{% if not vacante.finalizada %}
+	<ul>
+		<li>
+			<a href="/vacantes/{{ vacante.id }}">{{ vacante.titulo }}</a>
+			<div class="row">
+	        {% for aplicante in vacante.aplicantes() %}
+	        	<ul class="lista_aplicantes">
+	            	<li>Usuario: {{ aplicante.usuario }}</li>
+	            	<form method="POST" action="/finalizar/{{ vacante.id }}">
+			           <input type="text" name="puntos">
+			           <button type="input">Calificar</button>
+			        </form>
+	            </ul>
+	        {% endfor %}
+	        </div>
+	    </li>
+
+	</ul>
+	{% endif %}
+{% endfor %}
+<h1> Vacantes a las que haz aplicado: </h1>
+<ul>
+{% for aplicacion in aplicaciones %}
+	
+	<li>{{ aplicacion.vacante.titulo }} <p>vacante finalizada: 
+		{% if aplicacion.vacante.finalizada %}
+		si 
+		{% else %} 
+		no 
+		{% endif %} </p>
+	</li>
+
+{% endfor %}
+</ul>
+<div>
+{% endblock %}

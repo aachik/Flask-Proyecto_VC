@@ -64,10 +64,14 @@
                 <span class="sr-only">Siguiente</span>
               </a>
             </div>  
+            {% if current_user.is_authenticated() %}
                     <h3>Listo para ayudar?</h3>
                     <form method='GET' action='../aplicar/{{ vacante.id }}'>
                         <input type="submit" value="Aplicar">
-                    </form>     
+                    </form>
+                    {% else %}
+
+                    {% endif %}
                     </div>
                     
                 </div>
@@ -78,7 +82,7 @@
                        <li>{{ aplicante.usuario }}</li>
                      </ul>
                      {% endfor %}
-                     </div>
+                </div>
             </div>
 {% endblock %}
             

@@ -2,6 +2,7 @@
 {% block content %}
 <div class="container">
 	{% for vacante in vacantes %}
+    {% if not vacante.finalizada %}
 	<hr class="tweets-divider">
         <div class="row">
             <div class="col-md-4">
@@ -14,6 +15,7 @@
                 </blockquote>
             </div>
         </div>
+    {% endif%}
 	{% endfor %}
 </div>
 {% endblock %}

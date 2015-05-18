@@ -1,4 +1,4 @@
-from flask import (Flask, g, render_template, flash, redirect, url_for)
+from flask import (Flask, g, render_template, flash, redirect, url_for, request)
 from flask.ext.login import (LoginManager, login_user, logout_user, login_required, current_user)
 from flask.ext.bcrypt import check_password_hash
 import forms
@@ -128,6 +128,7 @@ def iniciar_sesion():
 				flash('Tu email o el password no coinciden!', 'error')
 	return render_template('login.html', form=form)
 
+
 @app.route('/vacantes')
 def vacantes():
 	vacantes = models.Vacante.select()
@@ -143,7 +144,6 @@ def vacante(ident):
 		pass
 
 	
-
 @app.route('/cerrar_sesion')
 @login_required
 def cerrar_sesion():
@@ -171,7 +171,31 @@ def aplicar(vacante):
 			return redirect(url_for('vacantes', usuario=g.user._get_current_object()))
 		except models.IntegrityError:
 			pass
+
+
+@app.route('/finalizar/<vacante>', methods=['POST'])
+@login_required
+def finalizar(vacante):
+	vacante = models.Vacante.get(models.Vacante.id**vacante)
+	q = models.Vacante.update(finalizada = True).where(models.Vacante.id == vacante.id)
+	q.execute()
+	q = models.Usuario.update(puntos = models.Usuario.puntos + int(request.form['puntos'])).where(models.Usuario.id == g.user.id)
+	q.execute()
+	flash('Vacante finalizada, gracias! +20!','success')
+	return render_template(url_for('perfil'))
+
+
+@app.route('/perfil')
+@login_required
+def perfil():
+	usuario = g.user._get_current_object()
+	usuario = models.Usuario.get(models.Usuario.id**usuario.id)
+
+	vacantes = usuario.vacantes_creadas()
+	aplicaciones = models.Aplicantes.select().where(models.Aplicantes.aplicante== usuario)
+	return render_template('perfil.html', usuario=usuario, vacantes=vacantes, aplicaciones=aplicaciones)
 	
+
 @app.route('/puntaje')
 def puntaje():
 	usuarios = models.Usuario.select().order_by(-models.Usuario.puntos)
@@ -179,23 +203,8 @@ def puntaje():
 
 
 if __name__ == '__main__':
-	models.drop()
 	models.initialize()
-	models.Usuario.nuevo(
-		usuario='Abdul',
-		twitter_id='abdulachik',
-		puntos=12,
-		bio='Melomano, programador, amante de los gatos!',
-		email='abdulhamid@outlook.com',
-		password='aa121292',
-		admin=True)
-	models.Usuario.nuevo(
-		usuario='Guillermo',
-		twitter_id='sindykiu',
-		puntos=9,
-		bio='Hola soy un abogado, me gusta correr y comer',
-		email='memo@outlook.com',
-		password='budaxoxo')
+	
 	app.run(
     	debug=DEBUG, 
     	port=PORT, 
