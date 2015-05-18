@@ -11,6 +11,8 @@ class Usuario(UserMixin, Model):
     email = CharField(unique=True)
     password = CharField(max_length=100)
     puntos = IntegerField(default=0)
+    twitter_id = CharField(unique=True)
+    bio = CharField(max_length=280)
     registro = DateTimeField(default=datetime.datetime.now)
     es_admin = BooleanField(default=False)
     
@@ -19,12 +21,14 @@ class Usuario(UserMixin, Model):
         order_by = ('-registro',)
 
     @classmethod
-    def nuevo(cls, usuario, email, password, admin=False, puntos=0):
+    def nuevo(cls, usuario, email, password, twitter_id, bio, admin=False, puntos=0):
     	try:
     		cls.create(
 	    		usuario=usuario,
 	    		email=email,
 	    		puntos=puntos,
+	    		twitter_id=twitter_id,
+	    		bio=bio,
 	    		password=generate_password_hash(password),
 	    		es_admin=admin
 	    	)
@@ -38,6 +42,12 @@ class Usuario(UserMixin, Model):
     			Aplicantes.aplicante == self
     			)
     	)
+
+    def mejores_puntajes(self):
+    	return (Usuario.select().order_by(-Usuario.puntos))
+
+    def __repr__(self):
+    	return '{}'.format(self.usuario)
 
 class Vacante(Model):
 	titulo = CharField(null=False, unique=True)

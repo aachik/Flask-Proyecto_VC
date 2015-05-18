@@ -40,6 +40,16 @@ class RegistroForm(Form):
             Email(),
             email_existe
         ])
+    twitter = StringField('Twitter', 
+        validators=[
+                DataRequired(),
+                Regexp(
+                r'^[a-zA-Z0-9_]+$',
+                message=("El usuario debe ser valido y puede contener solo letras, "
+                         "numeros y guiones bajos")
+            )])
+
+    bio = TextAreaField('Biografia:', validators=[ DataRequired()])
     password = PasswordField(
         'Password',
         validators=[

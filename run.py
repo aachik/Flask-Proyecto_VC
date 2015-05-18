@@ -32,8 +32,9 @@ def antes_request():
 	g.db = models.DATABASE
 	g.db.connect()
 	g.user = current_user
+	
 
-
+	
 @app.after_request
 def despues_request(response):
 	"""Cerrar la conexion despues de cada request"""
@@ -43,6 +44,7 @@ def despues_request(response):
 
 @app.route('/')
 def main():
+	usuario=g.user._get_current_object()
 	return render_template('index.html')
 
 
@@ -54,11 +56,12 @@ def registrarse():
 		usuario = models.Usuario.nuevo(
 			usuario=form.usuario.data,
 			email=form.email.data,
+			twitter_id=form.twitter_id.data,
+			bio=form.bio.data,
 			puntos=10,
 			password=form.password.data
 		)
-		login_user(usuario)
-		return redirect(url_for('main'))
+		return redirect(url_for('iniciar_sesion'))
 	return render_template('registro.html', form=form)
 
 
@@ -67,7 +70,8 @@ def registrarse():
 def subir_vacante():
 	form = forms.VacanteForm()
 	if form.validate_on_submit():
-		flash('Registro Exitoso!', 'exito')
+		flash('Gracias por subir una vacante! +10!', 'exito')
+		usuario = models.Usuario.get(models.Usuario.id**g.user.id)
 		img = form.imagen.data
 		path=os.path.join(app.config['UPLOAD_FOLDER'], img.filename)
 		with open(path, 'wb+') as f:
@@ -78,9 +82,12 @@ def subir_vacante():
 			descripcion=form.descripcion.data,
 			contacto=form.contacto.data,
 			direccion=form.direccion.data,
-			usuario=g.user._get_current_object(),
+			usuario=usuario,
 			imagen=img.filename
 		)
+		q = models.Usuario.update(puntos = models.Usuario.puntos + 10).where(models.Usuario.id == g.user.id)
+		q.execute()
+
 		return redirect(url_for('main'))
 	return render_template('agregar_vacantes.html', form=form)
 
@@ -91,12 +98,15 @@ def iniciar_sesion():
 	if form.validate_on_submit():
 		try:
 			usuario = models.Usuario.get(models.Usuario.email == form.email.data)
+			
 		except models.DoesNotExist:
 			flash('Tu email o el password no coinciden!', 'error')
 		else:
 			if check_password_hash(usuario.password, form.password.data):
 				login_user(usuario)
-				flash('Haz iniciado sesion exitosamente!', 'success')
+				q = models.Usuario.update(puntos = models.Usuario.puntos + 5).where(models.Usuario.id == g.user.id)
+				q.execute()
+				flash('Haz iniciado sesion exitosamente! +5!', 'success')
 				return redirect(url_for('main'))
 			else:
 				flash('Tu email o el password no coinciden!', 'error')
@@ -144,21 +154,34 @@ def aplicar(vacante):
 		except models.IntegrityError:
 			pass
 		else:
+			q = models.Usuario.update(puntos = models.Usuario.puntos + 10).where(models.Usuario.id == g.user.id)
+			q.execute()
 			flash("Gracias por aplicar {}!".format(aplicante.username), "success")
 	
 @app.route('/puntaje')
 def puntaje():
-	return render_template('puntuaje.html')
+	usuarios = models.Usuario.select()
+	return render_template('puntuaje.html', usuarios=usuarios)
 
 
 if __name__ == '__main__':
-	#models.drop()
+	models.drop()
 	models.initialize()
-	#models.Usuario.nuevo(
-	#	usuario='Abdul',
-	#	email='abdulhamid@outlook.com',
-	#	password='aa121292',
-	#	admin=True)
+	models.Usuario.nuevo(
+		usuario='Abdul',
+		twitter_id='abdulachik',
+		puntos=0,
+		bio='Melomano, programador, amante de los gatos!',
+		email='abdulhamid@outlook.com',
+		password='aa121292',
+		admin=True)
+	models.Usuario.nuevo(
+		usuario='Guillermo',
+		twitter_id='sindykiu',
+		puntos=0,
+		bio='Hola soy un abogado, me gusta correr y comer',
+		email='memo@outlook.com',
+		password='budaxoxo')
 	app.run(
     	debug=DEBUG, 
     	port=PORT, 
